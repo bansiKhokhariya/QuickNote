@@ -28,12 +28,10 @@
 // }
 
 
-'use client';
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from "react-hot-toast";
-import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -47,10 +45,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  useEffect(() => {
-    // Initialize toaster in the effect
-  }, []);
-
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -64,3 +58,4 @@ export default function RootLayout({
     </html>
   )
 }
+
