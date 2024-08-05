@@ -1,0 +1,87 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Pencil, Trash } from 'lucide-react'
+
+export default function MyNotes() {
+  const [notes, setNotes] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Fetch note IDs from local storage
+    const noteIds = JSON.parse(localStorage.getItem('noteIds') || '[]');
+
+    // Fetch notes details from the server
+    const fetchNotes = async () => {
+      try {
+        const responses = await Promise.all(noteIds.map(id => fetch(`/api/note?id=${id}`)));
+        const notesData = await Promise.all(responses.map(res => res.json()));
+
+        // Combine all the notes into a single array
+        const notesList = notesData.filter(data => data.success).map(data => data.note);
+        setNotes(notesList);
+      } catch (error) {
+        console.error('Error fetching notes:', error);
+      }
+    };
+
+    fetchNotes();
+  }, []);
+
+  const handleEdit = (id) => {
+    router.push(`/edit/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      // Delete the note from the server
+      const response = await fetch(`/api/note?id=${id}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        // Remove the note ID from local storage
+        const noteIds = JSON.parse(localStorage.getItem('noteIds') || '[]');
+        const updatedNoteIds = noteIds.filter(noteId => noteId !== id);
+        localStorage.setItem('noteIds', JSON.stringify(updatedNoteIds));
+
+        // Remove the note from the UI
+        setNotes(notes.filter(note => note._id !== id));
+      } else {
+        toast.error('Failed to delete note');
+      }
+    } catch (error) {
+      console.error('Error deleting note:', error);
+      toast.error('An error occurred while deleting the note.');
+    }
+  };
+
+  const handleNewNote = () => {
+    // Clear local storage and reset editor content
+    localStorage.removeItem('novel__content');
+    router.push(`/`);
+  };
+
+  return (
+    <div className="flex flex-col items-center w-full min-h-screen py-12">
+      <div className="w-full max-w-2xl p-4">
+        <div className='flex justify-between items-center my-5'>
+          <h1 className="text-xl sm:text-[30px] font-bold mb-4">My Notes List</h1>
+          <button className='bg-black text-white rounded-lg  px-4 py-2' onClick={handleNewNote}>+ New Note</button>
+        </div>
+        <ul className="space-y-4">
+          {notes.map(note => (
+            <li key={note._id} className="border p-4 rounded shadow">
+              <h2 className="text-lg font-semibold">{note.title}</h2>
+              <div className="mt-2 flex space-x-2">
+                <Pencil size={20} color='blue' className='cursor-pointer' onClick={() => handleEdit(note._id)} />
+                <Trash size={20} color='red' className='cursor-pointer' onClick={() => handleDelete(note._id)} />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
