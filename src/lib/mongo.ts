@@ -18,7 +18,7 @@ let clientPromise: Promise<MongoClient> | undefined;
 if (!uri) {
   console.group("⚠️ MONGODB_URI missing from .env");
   console.error(
-    "It's not mandatory but a database is required for Magic Links."
+    "It's not mandatory but a database is required for Magic Links. "
   );
   console.error(
     "If you don't need it, remove the code from /libs/next-auth.js (see connectMongo())"
