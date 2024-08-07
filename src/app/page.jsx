@@ -1,9 +1,16 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Editor } from 'novel';
 import toast from 'react-hot-toast';
 import useLocalStorage from '@/hooks/use-local-storage';
+
+
+import dynamic from 'next/dynamic';
+
+const Editor = dynamic(() => import('novel').then(mod => mod.Editor), {
+  ssr: false, // Disable server-side rendering for this component
+});
+
 
 export default function Home() {
   const [title, setTitle] = useState('');
