@@ -43,7 +43,6 @@ export default function Home() {
     const getNovelContentData = localStorage.getItem('novel__content');
     const parsedNovelContent = JSON.parse(getNovelContentData);
 
-    if (!title) return toast.error('Please enter a title before publishing.');
     setIsPublishing(true);
 
     try {
@@ -64,11 +63,11 @@ export default function Home() {
 
         // Update local storage with multiple note IDs
         const noteIds = JSON.parse(localStorage.getItem('noteIds') || '[]');
-        noteIds.push(data.note._id);
+        noteIds.push(data.note.noteUniqueId);
         localStorage.setItem('noteIds', JSON.stringify(noteIds));
 
         // Redirect to edit page with the new note ID
-        router.push(`/${data.note._id}`);
+        router.push(`/${data.note.noteUniqueId}`);
       } else {
         toast.error('Failed to publish note');
       }

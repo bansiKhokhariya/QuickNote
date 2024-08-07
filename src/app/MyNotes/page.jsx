@@ -14,7 +14,7 @@ export default function MyNotes() {
     // Fetch notes details from the server
     const fetchNotes = async () => {
       try {
-        const responses = await Promise.all(noteIds.map(id => fetch(`/api/note?id=${id}`)));
+        const responses = await Promise.all(noteIds.map(id => fetch(`/api/note?noteUniqueId=${id}`)));
         const notesData = await Promise.all(responses.map(res => res.json()));
 
         // Combine all the notes into a single array
@@ -28,14 +28,14 @@ export default function MyNotes() {
     fetchNotes();
   }, []);
 
-  const handleEdit = (id) => {
-    router.push(`/edit/${id}`);
+  const handleEdit = (noteUniqueId) => {
+    router.push(`/edit/${noteUniqueId}`);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (noteUniqueId) => {
     try {
       // Delete the note from the server
-      const response = await fetch(`/api/note?id=${id}`, {
+      const response = await fetch(`/api/note?noteUniqueId=${noteUniqueId}`, {
         method: 'DELETE',
       });
       const data = await response.json();
@@ -43,11 +43,11 @@ export default function MyNotes() {
       if (data.success) {
         // Remove the note ID from local storage
         const noteIds = JSON.parse(localStorage.getItem('noteIds') || '[]');
-        const updatedNoteIds = noteIds.filter(noteId => noteId !== id);
+        const updatedNoteIds = noteIds.filter(noteId => noteId !== noteUniqueId);
         localStorage.setItem('noteIds', JSON.stringify(updatedNoteIds));
 
         // Remove the note from the UI
-        setNotes(notes.filter(note => note._id !== id));
+        setNotes(notes.filter(note => note.noteUniqueId !== noteUniqueId));
       } else {
         toast.error('Failed to delete note');
       }
@@ -72,11 +72,11 @@ export default function MyNotes() {
         </div>
         <ul className="space-y-4">
           {notes.map(note => (
-            <li key={note._id} className="border p-4 rounded shadow">
-              <h2 className="text-lg font-semibold">{note.title}</h2>
+            <li key={note?._id} className="border p-4 rounded shadow">
+              <h2 className="text-lg font-semibold">{note?.title || 'Untitled'}</h2>
               <div className="mt-2 flex space-x-2">
-                <Pencil size={20} color='blue' className='cursor-pointer' onClick={() => handleEdit(note._id)} />
-                <Trash size={20} color='red' className='cursor-pointer' onClick={() => handleDelete(note._id)} />
+                <Pencil size={20} color='blue' className='cursor-pointer' onClick={() => handleEdit(note?.noteUniqueId)} />
+                <Trash size={20} color='red' className='cursor-pointer' onClick={() => handleDelete(note?.noteUniqueId)} />
               </div>
             </li>
           ))}

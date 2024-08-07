@@ -5,15 +5,20 @@ const { Schema } = mongoose;
 const noteSchema = new Schema({
     title: {
         type: String,
-        required: true,
-        trim: true, // Remove whitespace from start and end
+        trim: true,
     },
     editor_content: {
         type: mongoose.Schema.Types.Mixed,
         required: true,
     },
+    noteUniqueId: {
+        type: String,
+        unique: true, 
+        required: true,
+        trim: true, 
+    },
 }, {
-    timestamps: true, // Automatically create `createdAt` and `updatedAt` timestamps
+    timestamps: true,
 });
 
 // Create and export the model

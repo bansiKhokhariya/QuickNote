@@ -34,7 +34,7 @@ const Page = ({ params }) => {
         const fetchNote = async () => {
             if (noteId) {
                 try {
-                    const response = await fetch(`/api/note/?id=${noteId}`);
+                    const response = await fetch(`/api/note/?noteUniqueId=${noteId}`);
                     const data = await response.json();
                     if (data.success) {
                         setTitle(data?.note?.title || '');
@@ -63,7 +63,7 @@ const Page = ({ params }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    _id: params.id,
+                    noteUniqueId: params.id,
                     title,
                     editor_content: parsedNovelContent,
                 }),

@@ -1,15 +1,27 @@
 import { NextResponse, NextRequest } from 'next/server';
 import connectMongo from '../../../lib/mongoose';
 import Note from '../../../model/NoteSchema';
+import crypto from 'crypto';
+
+// Function to generate a unique 6-character ID
+const generateUniqueId = async () => {
+  const generateId = () => crypto.randomBytes(3).toString('hex').toUpperCase(); // Generates a 6-character string
+  let uniqueId = generateId();
+  const existingNote = await Note.findOne({ noteUniqueId: uniqueId });
+  while (existingNote) {
+    uniqueId = generateId();
+  }
+  return uniqueId;
+};
 
 // GET handler to fetch notes
 export async function GET(req: NextRequest) {
   await connectMongo();
 
-  const noteId = req.nextUrl.searchParams.get('id');
+  const noteUniqueId = req.nextUrl.searchParams.get('noteUniqueId');
   try {
-    if (noteId) {
-      const note = await Note.findById(noteId);
+    if (noteUniqueId) {
+      const note = await Note.findOne({ noteUniqueId });
       if (!note) {
         return NextResponse.json({ success: false, error: 'Note not found' }, { status: 404 });
       }
@@ -24,28 +36,32 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST handler to create or update notes
+
 export async function POST(req: NextRequest) {
   await connectMongo();
 
   try {
     const body = await req.json();
-    const { _id, title, editor_content } = body;
+    const { noteUniqueId, title, editor_content } = body;
 
     let result;
-    if (_id) {
-      // Update existing note
-      result = await Note.findByIdAndUpdate(
-        _id,
+    if (noteUniqueId) {
+      // Update existing note by noteUniqueId
+      result = await Note.findOneAndUpdate(
+        { noteUniqueId },
         { title, editor_content },
         { new: true, runValidators: true }
       );
+      if (!result) {
+        return NextResponse.json({ success: false, error: 'Note not found' }, { status: 404 });
+      }
     } else {
-
-      // Create a new note
+      // Create a new note with a unique noteUniqueId
+      const uniqueNoteId = await generateUniqueId();
       const newNote = new Note({
         title,
         editor_content,
+        noteUniqueId: uniqueNoteId,
       });
       result = await newNote.save();
     }
@@ -61,10 +77,10 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   await connectMongo();
 
-  const noteId = req.nextUrl.searchParams.get('id');
+  const noteUniqueId = req.nextUrl.searchParams.get('noteUniqueId');
   try {
-    if (noteId) {
-      const result = await Note.findByIdAndDelete(noteId);
+    if (noteUniqueId) {
+      const result = await Note.findOneAndDelete({ noteUniqueId });
       if (!result) {
         return NextResponse.json({ success: false, error: 'Note not found' }, { status: 404 });
       }
@@ -77,3 +93,4 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to delete note' }, { status: 500 });
   }
 }
+

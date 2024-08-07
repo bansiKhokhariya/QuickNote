@@ -23,7 +23,7 @@ const Page = ({ params }) => {
         return;
       }
       try {
-        const response = await fetch(`/api/note/?id=${noteId}`);
+        const response = await fetch(`/api/note/?noteUniqueId=${noteId}`);
         const data = await response.json();
         if (data.success) {
           setTitle(data?.note?.title || 'Untitled');

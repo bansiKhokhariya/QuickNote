@@ -45,6 +45,7 @@
     "react-hot-toast": "^2.4.1",
     "tailwindcss": "3.3.3",
     "tiptap-markdown": "^0.8.2",
+    "ts-pattern": "^5.2.0",
     "typescript": "5.2.2"
   }
 }
