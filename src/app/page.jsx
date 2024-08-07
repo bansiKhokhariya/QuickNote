@@ -1,19 +1,42 @@
 'use client'
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Editor } from 'novel';
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
+import useLocalStorage from '@/hooks/use-local-storage';
 
 export default function Home() {
   const [title, setTitle] = useState('');
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
   const router = useRouter();
+  const [novelContent, setNovelContent] = useLocalStorage('novel__content', '');
+
+  useEffect(() => {
+    const initialContent = {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+        },
+      ],
+    };
+
+    // Check if novelContent is already set to avoid unnecessary updates
+    if (!novelContent) {
+      const editorContentString = initialContent;
+      setNovelContent(editorContentString);
+    }
+
+    // Set loading to false once the initial content is set or already exists
+    setIsLoading(false);
+  }, [novelContent, setNovelContent]);
 
   const handlePublish = async () => {
     const getNovelContentData = localStorage.getItem('novel__content');
     const parsedNovelContent = JSON.parse(getNovelContentData);
 
-    if (!title) return toast.error('Please enter a title before publishing.');;
+    if (!title) return toast.error('Please enter a title before publishing.');
     setIsPublishing(true);
 
     try {
@@ -30,13 +53,13 @@ export default function Home() {
 
       const data = await response.json();
       if (data.success) {
-
         toast.success('Note published successfully!');
 
         // Update local storage with multiple note IDs
         const noteIds = JSON.parse(localStorage.getItem('noteIds') || '[]');
         noteIds.push(data.note._id);
         localStorage.setItem('noteIds', JSON.stringify(noteIds));
+
         // Redirect to edit page with the new note ID
         router.push(`/${data.note._id}`);
       } else {
@@ -50,9 +73,8 @@ export default function Home() {
     }
   };
 
-  const handleNewNote = () => {
-    localStorage.removeItem('novel__content');
-    router.push(`/`);
+  const handleMyNotes = () => {
+    router.push(`/MyNotes`);
   };
 
   return (
@@ -68,20 +90,25 @@ export default function Home() {
         <div className="flex flex-col gap-4">
           <button
             onClick={handlePublish}
-            className={` py-2 bg-blue-500 text-white rounded ${isPublishing ? 'opacity-50' : ''}`}
+            className={`py-2 bg-blue-500 text-white rounded ${isPublishing ? 'opacity-50' : ''}`}
             disabled={isPublishing}
           >
             {isPublishing ? 'Publishing...' : 'Publish'}
           </button>
-          <button className="  py-2 bg-black text-white rounded" onClick={handleNewNote}>My Notes</button>
+          <button className="py-2 bg-black text-white rounded" onClick={handleMyNotes}>
+            My Notes
+          </button>
         </div>
       </div>
       <div className="w-full p-4">
-        <Editor />
+        {isLoading ? (
+          <div className='text-center'>Loading...</div>
+        ) : (
+          <Editor />
+        )}
       </div>
     </div>
   );
 }
-
 
 

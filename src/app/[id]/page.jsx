@@ -114,9 +114,9 @@ const Page = ({ params }) => {
       <div className="w-full lg:w-1/4  p-4 ">
         <p className='text-center text-xl font-bold mb-5'>{title}</p>
         <div className="flex flex-col gap-4">
-          <button className="  py-2 bg-black text-white rounded" onClick={handleNewNote}>New Note</button>
-          <button className="  py-2 bg-black text-white rounded" onClick={handleMyNotes}>My Notes</button>
-          <button className="  py-2 bg-black text-white rounded" onClick={handleShare}>Share</button>
+          <button className="py-2 bg-black text-white rounded" onClick={handleNewNote}>New Note</button>
+          <button className="py-2 bg-black text-white rounded" onClick={handleMyNotes}>My Notes</button>
+          <button className="py-2 bg-black text-white rounded" onClick={handleShare}>Share</button>
         </div>
       </div>
       <div className="w-full m-4 border rounded shadow p-4">
