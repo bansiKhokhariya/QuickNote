@@ -1,15 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import useLocalStorage from '@/hooks/use-local-storage';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { generateHTML } from '@tiptap/html';
-import { defaultExtensions } from '@/lib/default-extensions';
+import { defaultExtensions } from '@/components/editor/extensions';
 
 const Page = ({ params }) => {
   const [title, setTitle] = useState('');
-  const [novelContent, setNovelContent] = useLocalStorage('novel__content', '');
+  const [novelContent, setNovelContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [contentHtml, setContentHtml] = useState('');
   const router = useRouter();
@@ -85,18 +84,18 @@ const Page = ({ params }) => {
   return (
     <div className="flex flex-col lg:flex-row items-start w-full min-h-screen px-4 container mx-auto">
       <div className="w-full lg:w-1/4 p-4">
-        <p className='text-center text-xl font-bold mb-5'>{title}</p>
+        <p className='text-center text-xl font-bold mb-5'> <b>{title}</b> </p>
         <div className="flex flex-col gap-4">
-          <button className="py-2 bg-black text-white rounded" onClick={handleNewNote}>New Note</button>
-          <button className="py-2 bg-black text-white rounded" onClick={handleMyNotes}>My Notes</button>
-          <button className="py-2 bg-black text-white rounded" onClick={handleShare}>Share</button>
+          <button className="py-2 bg-black text-white rounded border" onClick={handleNewNote}>New Note</button>
+          <button className="py-2 bg-black text-white rounded border" onClick={handleMyNotes}>My Notes</button>
+          <button className="py-2 bg-black text-white rounded border" onClick={handleShare}>Share</button>
         </div>
       </div>
-      <div className="w-full m-4 border rounded shadow p-4">
+      <div className="w-full mt-4 border rounded shadow p-4">
         {loading ? (
           <div className='text-center'>Loading...</div>
         ) : (
-          <div className="prose" dangerouslySetInnerHTML={{ __html: contentHtml }}></div>
+          <div dangerouslySetInnerHTML={{ __html: contentHtml }}></div>
         )}
       </div>
     </div>

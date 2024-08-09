@@ -1,50 +1,20 @@
-'use client'
+"use client";
+import Editor from "@/components/editor/advanced-editor";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { JSONContent } from "novel";
+import { useState } from "react";
+import { defaultValue } from "./default-value";
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import useLocalStorage from '@/hooks/use-local-storage';
-
-
-import dynamic from 'next/dynamic';
-
-const Editor = dynamic(() => import('novel').then(mod => mod.Editor), {
-  ssr: false, // Disable server-side rendering for this component
-});
-
 
 export default function Home() {
   const [title, setTitle] = useState('');
   const [isPublishing, setIsPublishing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
   const router = useRouter();
-  const [novelContent, setNovelContent] = useLocalStorage('novel__content', '');
-
-  useEffect(() => {
-    const initialContent = {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-        },
-      ],
-    };
-
-    // Check if novelContent is already set to avoid unnecessary updates
-    if (!novelContent) {
-      const editorContentString = initialContent;
-      setNovelContent(editorContentString);
-    }
-
-    // Set loading to false once the initial content is set or already exists
-    setIsLoading(false);
-  }, [novelContent, setNovelContent]);
+  const [value, setValue] = useState<JSONContent>(defaultValue);
 
   const handlePublish = async () => {
-    const getNovelContentData = localStorage.getItem('novel__content');
-    const parsedNovelContent = JSON.parse(getNovelContentData);
-
     setIsPublishing(true);
-
     try {
       const response = await fetch('/api/note', {
         method: 'POST',
@@ -53,7 +23,7 @@ export default function Home() {
         },
         body: JSON.stringify({
           title,
-          editor_content: parsedNovelContent,
+          editor_content: value,
         }),
       });
 
@@ -96,25 +66,22 @@ export default function Home() {
         <div className="flex flex-col gap-4">
           <button
             onClick={handlePublish}
-            className={`py-2 bg-blue-500 text-white rounded ${isPublishing ? 'opacity-50' : ''}`}
+            className={`py-2 bg-blue-500 text-white rounded border ${isPublishing ? 'opacity-50' : ''}`}
             disabled={isPublishing}
           >
             {isPublishing ? 'Publishing...' : 'Publish'}
           </button>
-          <button className="py-2 bg-black text-white rounded" onClick={handleMyNotes}>
+          <button className="py-2 bg-black text-white rounded border" onClick={handleMyNotes}>
             My Notes
           </button>
         </div>
       </div>
       <div className="w-full p-4">
-        {isLoading ? (
-          <div className='text-center'>Loading...</div>
-        ) : (
-          <Editor />
-        )}
+        <div className="mb-5">
+          <ThemeToggle />
+        </div>
+        <Editor initialValue={value} onChange={setValue} />
       </div>
     </div>
   );
 }
-
-

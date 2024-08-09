@@ -16,15 +16,12 @@ export default function MyNotes() {
       try {
         const responses = await Promise.all(noteIds.map(id => fetch(`/api/note?noteUniqueId=${id}`)));
         const notesData = await Promise.all(responses.map(res => res.json()));
-
-        // Combine all the notes into a single array
         const notesList = notesData.filter(data => data.success).map(data => data.note);
         setNotes(notesList);
       } catch (error) {
         console.error('Error fetching notes:', error);
       }
     };
-
     fetchNotes();
   }, []);
 
@@ -64,11 +61,11 @@ export default function MyNotes() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full min-h-screen py-12">
-      <div className="w-full max-w-2xl p-4">
-        <div className='flex justify-between items-center my-5'>
-          <h1 className="text-xl sm:text-[30px] font-bold mb-4">My Notes List</h1>
-          <button className='bg-black text-white rounded-lg  px-4 py-2' onClick={handleNewNote}>+ New Note</button>
+    <div className="py-12 container mx-auto">
+      <div className="p-4">
+        <div className='flex justify-between items-center mt-5 mb-5'>
+          <p><b>My Notes List</b> </p>
+          <button className='bg-black text-white rounded-lg border  px-4 py-2' onClick={handleNewNote}>+ New Note</button>
         </div>
         <ul className="space-y-4">
           {notes.map(note => (
