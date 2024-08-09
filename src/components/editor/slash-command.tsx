@@ -1,5 +1,5 @@
 import {
-  AirVentIcon,
+  Sparkles,
   CheckSquare,
   Code,
   Heading1,
@@ -21,7 +21,7 @@ export const suggestionItems = createSuggestionItems([
     title: "AI",
     description: "Use AI to generate content.",
     searchTerms: ["ai", "generate", "content"],
-    icon: <AirVentIcon size={18} />,
+    icon: <Sparkles size={18} />,
     command: async ({ editor, range }) => {
       try {
         const prompt = editor.getText(); // Get the current text from the editor

@@ -69,7 +69,7 @@ export default function MyNotes() {
         </div>
         <ul className="space-y-4">
           {notes.map(note => (
-            <li key={note?._id} className="border p-4 rounded shadow">
+            <li key={note?._id} className="border p-4 mb-4 rounded shadow-md">
               <h2 className="text-lg font-semibold">{note?.title || 'Untitled'}</h2>
               <div className="mt-2 flex space-x-2">
                 <Pencil size={20} color='blue' className='cursor-pointer' onClick={() => handleEdit(note?.noteUniqueId)} />

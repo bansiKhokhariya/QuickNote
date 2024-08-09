@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
-import connectMongo from '../../../lib/mongoose';
-import Note from '../../../model/NoteSchema';
+import connectMongo from '@/lib/mongoose';
+import Note from '@/model/NoteSchema';
 import crypto from 'crypto';
 
 // Function to generate a unique 6-character ID
