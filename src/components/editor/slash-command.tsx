@@ -37,23 +37,35 @@ export const suggestionItems = createSuggestionItems([
           throw new Error("Failed to generate AI content");
         }
 
-        const reader = response.body?.getReader();
+        // Check if response.body is available and get the reader
+        const reader = response.body ? response.body.getReader() : null;
+
+        if (!reader) {
+          throw new Error("Failed to create a stream reader");
+        }
+
         const decoder = new TextDecoder("utf-8");
         let aiContent = "";
 
+        // Read the stream
         while (true) {
-          const { done, value }: any = await reader?.read();
+          const { done, value } = await reader.read();
           if (done) break;
-          aiContent += decoder.decode(value);
-          // Insert the content into the editor at the current range
-          editor.chain().focus().insertContent(aiContent).run();
+          aiContent += decoder.decode(value, { stream: true });
         }
+
+        // After reading all stream data, insert it once into the editor
+        editor.chain().focus().insertContent(aiContent).run();
+
       } catch (error) {
         console.error(error);
         alert("There was an error generating content. Please try again.");
       }
     },
-  },
+  }
+
+  ,
+
   {
     title: "Send Feedback",
     description: "Let us know how we can improve.",

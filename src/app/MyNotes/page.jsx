@@ -1,10 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash } from 'lucide-react'
+import { Pencil, Trash } from 'lucide-react';
 
 export default function MyNotes() {
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -20,6 +21,8 @@ export default function MyNotes() {
         setNotes(notesList);
       } catch (error) {
         console.error('Error fetching notes:', error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
     fetchNotes();
@@ -55,8 +58,6 @@ export default function MyNotes() {
   };
 
   const handleNewNote = () => {
-    // Clear local storage and reset editor content
-    localStorage.removeItem('novel__content');
     router.push(`/`);
   };
 
@@ -65,20 +66,28 @@ export default function MyNotes() {
       <div className="p-4">
         <div className='flex justify-between items-center mt-5 mb-5'>
           <p><b>My Notes List</b> </p>
-          <button className='bg-black text-white rounded-lg border  px-4 py-2' onClick={handleNewNote}>+ New Note</button>
+          <button className='bg-black text-white rounded-lg border px-4 py-2' onClick={handleNewNote}>+ New Note</button>
         </div>
-        <ul className="space-y-4">
-          {notes.map(note => (
-            <li key={note?._id} className="border p-4 mb-4 rounded shadow-md">
-              <h2 className="text-lg font-semibold">{note?.title || 'Untitled'}</h2>
-              <div className="mt-2 flex space-x-2">
-                <Pencil size={20} color='blue' className='cursor-pointer' onClick={() => handleEdit(note?.noteUniqueId)} />
-                <Trash size={20} color='red' className='cursor-pointer' onClick={() => handleDelete(note?.noteUniqueId)} />
-              </div>
-            </li>
-          ))}
-        </ul>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500">Loading...</div>
+          </div>
+        ) : (
+          <ul className="space-y-4">
+            {notes.map(note => (
+              <li key={note?._id} className="border p-4 mb-4 rounded shadow-md">
+                <h2 className="text-lg font-semibold">{note?.title || 'Untitled'}</h2>
+                <div className="mt-2 flex space-x-2">
+                  <Pencil size={20} color='blue' className='cursor-pointer' onClick={() => handleEdit(note?.noteUniqueId)} />
+                  <Trash size={20} color='red' className='cursor-pointer' onClick={() => handleDelete(note?.noteUniqueId)} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+
     </div>
+
   );
 }
