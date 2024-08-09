@@ -161,7 +161,7 @@ export const ColorSelector = ({ open, onOpenChange }: ColorSelectorProps) => {
             </EditorBubbleItem>
           ))}
         </div>
-        <div>
+        {/* <div>
           <div className="my-1 px-2 text-sm font-semibold text-muted-foreground">
             Background
           </div>
@@ -189,7 +189,7 @@ export const ColorSelector = ({ open, onOpenChange }: ColorSelectorProps) => {
               )}
             </EditorBubbleItem>
           ))}
-        </div>
+        </div> */}
       </PopoverContent>
     </Popover>
   );
