@@ -128,10 +128,10 @@ export default function Home() {
               }`}
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold ">Login with Magic Link</h2>
+              <h2 className="text-xl font-bold ">Make a Guest Account</h2>
               <X size={24} color="red" onClick={toggleModal} />
             </div>
-            <p className="mb-4">Logging in is not required if you want to</p>
+            <p className="mb-4">Make account creation optional if you want to create one</p>
             <Login redirectUrl={`/edit/${noteUniqueId}`} />
           </div>
         </div>
