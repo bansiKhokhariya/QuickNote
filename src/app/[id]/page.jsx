@@ -93,7 +93,9 @@ const Page = ({ params }) => {
       </div>
       <div className="w-full mt-4 border rounded shadow p-4">
         {loading ? (
-          <div className='text-center'>Loading...</div>
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
         ) : (
           <div dangerouslySetInnerHTML={{ __html: contentHtml }}></div>
         )}

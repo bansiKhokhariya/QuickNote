@@ -85,7 +85,9 @@ const Page = ({ params }) => {
             {loading ? (
                 <div className="flex flex-col items-center w-full min-h-screen py-12">
                     <div className="w-full max-w-2xl p-4">
-                        <div className="text-center text-gray-500">Loading...</div>
+                        <div className="flex justify-center items-center h-64">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        </div>
                     </div>
                 </div>
             ) : (
