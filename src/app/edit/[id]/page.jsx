@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import Editor from "@/components/editor/advanced-editor";
 import Login from '@/components/magicLink/Login'
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Save, Plus, ListOrdered } from 'lucide-react'
 
 const Page = ({ params }) => {
     const [value, setValue] = useState(null); // Ensure this is correctly initialized as null or a valid JSONContent object.
@@ -85,32 +86,23 @@ const Page = ({ params }) => {
                 <>
                     <div className="container mx-auto p-5">
                         <div className="flex w-full justify-between items-center flex-wrap mb-5">
-                            <div className="flex gap-2 flex-wrap mb-2">
+                            <div className="flex gap-2 flex-wrap items-center mb-2">
                                 <input
                                     type="text"
                                     placeholder="Enter note title here"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="p-2 border border-gray-300 rounded"
+                                    className="p-2 border border-gray-300 rounded text-xs sm:text-lg"
                                 />
-                                <button
-                                    className="py-2 px-20 bg-black text-white rounded border"
-                                    onClick={handleUpdate}
-                                >
-                                    Save
-                                </button>
-                                <button
-                                    className="py-2 px-20 bg-black text-white rounded border"
-                                    onClick={handleNewNote}
-                                >
-                                    New Note
-                                </button>
-                                <button
-                                    className="py-2 px-20 bg-black text-white rounded border"
-                                    onClick={handleMyNotes}
-                                >
-                                    My Notes
-                                </button>
+                                <div className="border p-1 rounded">
+                                    <Save className="sm:w-8 sm:h-8 w-5 h-5 cursor-pointer" onClick={handleUpdate} />
+                                </div>
+                                <div className="border p-1 rounded">
+                                    <Plus className="sm:w-8 sm:h-8 w-5 h-5 cursor-pointer" onClick={handleNewNote} />
+                                </div>
+                                <div className="border p-1 rounded">
+                                    <ListOrdered className="sm:w-8 sm:h-8 w-5 h-5 cursor-pointer" onClick={handleMyNotes} />
+                                </div>
                             </div>
                             <div className="flex gap-2 mb-2">
                                 <ThemeToggle />

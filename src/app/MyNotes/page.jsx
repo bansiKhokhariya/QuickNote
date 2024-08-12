@@ -45,7 +45,6 @@ export default function MyNotes() {
         const noteIds = JSON.parse(localStorage.getItem('noteIds') || '[]');
         const updatedNoteIds = noteIds.filter(noteId => noteId !== noteUniqueId);
         localStorage.setItem('noteIds', JSON.stringify(updatedNoteIds));
-
         // Remove the note from the UI
         setNotes(notes.filter(note => note.noteUniqueId !== noteUniqueId));
       } else {

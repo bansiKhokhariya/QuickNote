@@ -11,6 +11,7 @@ import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { UserContext } from '@/lib/UserContext';
 import Image from 'next/image'
+import { Save, ListOrdered } from 'lucide-react'
 
 export default function Home() {
   const [title, setTitle] = useState("");
@@ -142,22 +143,14 @@ export default function Home() {
               placeholder="Enter note title here"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="p-2 border border-gray-300 rounded"
+              className="p-2 border border-gray-300 rounded text-xs sm:text-lg"
             />
-            <button
-              onClick={handlePublish}
-              className={`py-2 px-20 bg-blue-500 text-white rounded border ${isPublishing ? "opacity-50" : ""
-                }`}
-              disabled={isPublishing}
-            >
-              {isPublishing ? "Publishing..." : "Publish"}
-            </button>
-            <button
-              className="py-2 px-20 bg-black text-white rounded border"
-              onClick={handleMyNotes}
-            >
-              My Notes
-            </button>
+            <div className="border p-1 rounded">
+              <Save className="sm:w-8 sm:h-8 w-5 h-5 cursor-pointer" onClick={handlePublish} />
+            </div>
+            <div className="border p-1 rounded">
+              <ListOrdered className="sm:w-8 sm:h-8 w-5 h-5 cursor-pointer" onClick={handleMyNotes} />
+            </div>
           </div>
           <div className="flex gap-2 mb-2">
             <ThemeToggle />
@@ -177,7 +170,7 @@ export default function Home() {
           >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold ">Make a Guest Account</h2>
-              <X size={24} color="red" onClick={toggleModal} />
+              <X size={24} color="red" className="cursor-pointer" onClick={toggleModal} />
             </div>
             <div className="flex flex-col gap-1 mb-5">
               <label htmlFor="email" className="text-sm">Enter your email (optional):</label>

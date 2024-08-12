@@ -1,9 +1,5 @@
 /* styles/globals.css or your CSS file */
 
-.ProseMirror {
-  font-family: var(--font-sans);
-}
-
 .ProseMirror p {
   margin: 0 0 5px 0;
   padding: 0;
