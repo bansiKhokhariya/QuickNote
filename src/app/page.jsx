@@ -137,7 +137,7 @@ export default function Home() {
     <>
       <div className="container mx-auto p-5">
         <div className="flex w-full justify-between items-center flex-wrap mb-5">
-          <div className="flex gap-2 flex-wrap mb-2">
+          <div className="flex items-center  gap-2 flex-wrap mb-2">
             <input
               type="text"
               placeholder="Enter note title here"
@@ -145,11 +145,13 @@ export default function Home() {
               onChange={(e) => setTitle(e.target.value)}
               className="p-2 border border-gray-300 rounded text-xs sm:text-lg"
             />
-            <div className="border p-1 rounded">
-              <Save className="sm:w-8 sm:h-8 w-5 h-5 cursor-pointer" onClick={handlePublish} />
+            <div className="border p-1 rounded cursor-pointer flex justify-center" onClick={handlePublish}>
+              <Button className="sm:block hidden px-20">Save</Button>
+              <Save className="sm:w-8 sm:h-8 w-5 h-5 sm:hidden block" />
             </div>
-            <div className="border p-1 rounded">
-              <ListOrdered className="sm:w-8 sm:h-8 w-5 h-5 cursor-pointer" onClick={handleMyNotes} />
+            <div className="border p-1 rounded cursor-pointer flex justify-center" onClick={handleMyNotes}>
+              <Button className="sm:block hidden px-20">My Notes</Button>
+              <ListOrdered className="sm:w-8 sm:h-8 w-5 h-5  sm:hidden block" />
             </div>
           </div>
           <div className="flex gap-2 mb-2">
