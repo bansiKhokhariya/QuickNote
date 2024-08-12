@@ -146,12 +146,12 @@ export default function Home() {
               className="p-2 border border-gray-300 rounded text-xs sm:text-lg"
             />
             <div className="border p-1 rounded cursor-pointer flex justify-center" onClick={handlePublish}>
-              <Button className="sm:block hidden px-20">Save</Button>
-              <Save className="sm:w-8 sm:h-8 w-5 h-5 sm:hidden block" />
+              <Button className="md:block hidden px-10">Save</Button>
+              <Save className="sm:w-8 sm:h-8 w-5 h-5 md:hidden block" />
             </div>
             <div className="border p-1 rounded cursor-pointer flex justify-center" onClick={handleMyNotes}>
-              <Button className="sm:block hidden px-20">My Notes</Button>
-              <ListOrdered className="sm:w-8 sm:h-8 w-5 h-5  sm:hidden block" />
+              <Button className="md:block hidden px-10">My Notes</Button>
+              <ListOrdered className="sm:w-8 sm:h-8 w-5 h-5  md:hidden block" />
             </div>
           </div>
           <div className="flex gap-2 mb-2">
