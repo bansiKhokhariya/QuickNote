@@ -19,7 +19,7 @@ export default function Home() {
   const [value, setValue] = useState(defaultValue);
   const [noteUniqueId, setNoteUniqueId] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [theme, setTheme] = useState("system"); // Default theme
+  const [theme, setTheme] = useState("light");
   const [user, setUser] = useContext(UserContext);
   const router = useRouter();
 
