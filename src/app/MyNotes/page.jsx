@@ -65,7 +65,7 @@ export default function MyNotes() {
     <div className="py-12 container mx-auto">
       <div className="p-4">
         <div className='flex justify-between items-center mt-5 mb-5'>
-          <p><b>My Notes List</b> </p>
+          <p className='text-[30px]'><b>My Notes List</b> </p>
           <button className='bg-black text-white rounded-lg border px-4 py-2' onClick={handleNewNote}>+ New Note</button>
         </div>
         {loading ? (
@@ -86,8 +86,6 @@ export default function MyNotes() {
           </ul>
         )}
       </div>
-
     </div>
-
   );
 }

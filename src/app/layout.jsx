@@ -31,7 +31,6 @@ export default function RootLayout({
             setUser({ ...userData, loading: false });
           });
         } else {
-          router.push('/');
           setUser({ loading: false });
         }
       });
@@ -51,7 +50,7 @@ export default function RootLayout({
         <UserContext.Provider value={[user, setUser]}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
