@@ -2,7 +2,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { magic } from '@/lib/magic';
 import { UserContext } from '@/lib/UserContext';
-import { X } from 'lucide-react';
+import { X, User } from 'lucide-react';
 import { Button } from '@/components/ui/button'
 
 const SignInButton = ({ redirectUrl }) => {
@@ -66,7 +66,10 @@ const SignInButton = ({ redirectUrl }) => {
 
   return (
     <div>
-      <Button onClick={handleOpenModal}>Sign In</Button>
+      <div className="border p-1 rounded cursor-pointer flex justify-center" onClick={handleOpenModal} >
+        <User className="sm:w-8 sm:h-8 w-5 h-5" />
+      </div>
+
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div

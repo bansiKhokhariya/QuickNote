@@ -86,14 +86,14 @@ const Page = ({ params }) => {
             ) : (
                 <>
                     <div className="container mx-auto p-5">
-                        <div className="flex w-full justify-between items-center flex-wrap mb-5">
-                            <div className="flex gap-2 flex-wrap items-center mb-2">
+                        <div className="flex w-full justify-between items-center gap-2  mb-5">
+                            <div className="flex gap-2 items-center mb-2">
                                 <input
                                     type="text"
                                     placeholder="Enter note title here"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="p-2 border border-gray-300 rounded text-xs sm:text-lg"
+                                    className="p-2 border border-gray-300 rounded text-[8px] sm:text-lg"
                                 />
                                 <div className="border p-1 rounded cursor-pointer flex justify-center" onClick={handleUpdate}>
                                     <Button className="md:block hidden px-10">Save</Button>

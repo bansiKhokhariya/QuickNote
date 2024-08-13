@@ -136,8 +136,8 @@ export default function Home() {
   return (
     <>
       <div className="container mx-auto p-5">
-        <div className="flex w-full justify-between items-center flex-wrap mb-5">
-          <div className="flex items-center  gap-2 flex-wrap mb-2">
+        <div className="flex w-full justify-between items-center  mb-5">
+          <div className="flex items-center gap-2 mb-2">
             <input
               type="text"
               placeholder="Enter note title here"
@@ -154,7 +154,7 @@ export default function Home() {
               <ListOrdered className="sm:w-8 sm:h-8 w-5 h-5  md:hidden block" />
             </div>
           </div>
-          <div className="flex gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-2">
             <ThemeToggle />
             <Login redirectUrl={'/'} />
           </div>
