@@ -21,6 +21,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@tailwindcss/typography": "^0.5.13",
+    "@tiptap/html": "^2.6.2",
     "@vercel/blob": "^0.23.4",
     "ai": "^2.2.37",
     "axios": "^1.6.8",

@@ -6,14 +6,25 @@ import toast from 'react-hot-toast';
 import Editor from "@/components/editor/advanced-editor";
 import Login from '@/components/magicLink/Login'
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Save, Plus, ListOrdered } from 'lucide-react'
+import { Plus, ListOrdered, Pencil, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { generateHTML } from '@tiptap/html';
+import { defaultExtensions } from '@/components/editor/extensions';
 
 const Page = ({ params }) => {
     const [value, setValue] = useState(null);
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(true);
     const router = useRouter();
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [contentHtml, setContentHtml] = useState('');
+
+    useEffect(() => {
+        const isEditNote = localStorage.getItem('isEditNote');
+        if (isEditNote === 'true') {
+            setIsEditMode(true);
+        }
+    }, []);
 
     useEffect(() => {
         const noteId = params.id;
@@ -24,6 +35,8 @@ const Page = ({ params }) => {
                     const data = await response.json();
                     if (data.success) {
                         setTitle(data.notes.title || '');
+                        const html = generateHTML(data.notes.editor_content, defaultExtensions);
+                        setContentHtml(html);
                         setValue(data.notes.editor_content || null);
                     } else {
                         toast.error('Failed to load note');
@@ -38,7 +51,7 @@ const Page = ({ params }) => {
         fetchNote();
     }, [params.id]);
 
-    const handleUpdate = async () => {
+    const handleUpdate = async (updatedValue) => {
         try {
             const response = await fetch('/api/note', {
                 method: 'POST',
@@ -48,13 +61,12 @@ const Page = ({ params }) => {
                 body: JSON.stringify({
                     noteUniqueId: params.id,
                     title,
-                    editor_content: value,
+                    editor_content: updatedValue || value,
                 }),
             });
 
             const data = await response.json();
             if (data.success) {
-                toast.success('Note updated successfully!');
             } else {
                 toast.error('Failed to update note');
             }
@@ -62,6 +74,13 @@ const Page = ({ params }) => {
             console.error('Error updating note:', error);
             toast.error('An error occurred while updating the note.');
         }
+    };
+
+    const toggleEditMode = () => {
+        localStorage.removeItem('isEditNote');
+        const html = generateHTML(value, defaultExtensions);
+        setContentHtml(html);
+        setIsEditMode(!isEditMode);
     };
 
     const handleNewNote = () => {
@@ -93,15 +112,25 @@ const Page = ({ params }) => {
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     className="p-1 border rounded text-[8px] sm:text-lg"
+                                    disabled={!isEditMode}  // Disable input if not in edit mode
                                 />
-                                <div onClick={handleUpdate}>
-                                    <Button className="md:block hidden px-10">Save</Button>
-                                    <div className='md:hidden block'>
-                                        <Button variant="outline" size="icon">
-                                            <Save className="h-[1.2rem] w-[1.2rem]" />
-                                        </Button>
-                                    </div>
-                                </div>
+                                {isEditMode ? (
+                                    <Button size="icon">
+                                        <Eye
+                                            size={20}
+                                            className='cursor-pointer h-[1.2rem] w-[1.2rem]'
+                                            onClick={toggleEditMode}
+                                        />
+                                    </Button>
+                                ) : (
+                                    <Button size="icon">
+                                        <Pencil
+                                            size={20}
+                                            className='cursor-pointer h-[1.2rem] w-[1.2rem]'
+                                            onClick={toggleEditMode}
+                                        />
+                                    </Button>
+                                )}
                                 <div onClick={handleNewNote}>
                                     <Button className="md:block hidden px-10">New Note</Button>
                                     <div className='md:hidden block'>
@@ -125,7 +154,14 @@ const Page = ({ params }) => {
                             </div>
                         </div>
                         <div>
-                            <Editor initialValue={value} onChange={setValue} />
+                            {isEditMode ? (
+                                <Editor initialValue={value} onChange={(updatedValue) => {
+                                    setValue(updatedValue);
+                                    handleUpdate(updatedValue);
+                                }} />
+                            ) : (
+                                <div className='tiptap ProseMirror prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full' dangerouslySetInnerHTML={{ __html: contentHtml }}></div>
+                            )}
                         </div>
                     </div>
                 </>

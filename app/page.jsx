@@ -28,7 +28,7 @@ export default function Home() {
     }
   }, [session]);
 
-  const currentUrl = `https://quick-note-snowy.vercel.app/edit/${noteUniqueId}`;
+  const currentUrl = `https://quick-note-snowy.vercel.app/${noteUniqueId}`;
 
   const handlePublish = async () => {
     const storedTheme = localStorage.getItem("theme");
@@ -82,7 +82,7 @@ export default function Home() {
 
   const handleSignIn = async () => {
     try {
-      await signIn('email', { email, callbackUrl: `/edit/${noteUniqueId}` });
+      await signIn('email', { email, callbackUrl: `/${noteUniqueId}` });
     } catch (error) {
       console.error('Error signing in', error);
     }
@@ -90,12 +90,12 @@ export default function Home() {
 
   const handleGuestModal = () => {
     if (session?.user) {
-      router.push(`/edit/${noteUniqueId}`);
+      router.push(`/${noteUniqueId}`);
     } else {
       if (email) {
         handleSignIn();
       } else {
-        router.push(`/edit/${noteUniqueId}`);
+        router.push(`/${noteUniqueId}`);
       }
     }
   }
@@ -156,7 +156,7 @@ export default function Home() {
               <h2 className="text-xl font-bold ">Make a Guest Account</h2>
               <X size={24} color="red" className="cursor-pointer" onClick={toggleModal} />
             </div>
-            <div className="flex flex-col gap-1 mb-5">
+            {!session?.user && <div className="flex flex-col gap-1 mb-5">
               <label htmlFor="email" className="text-sm">Enter your email (optional):</label>
               <input
                 id="email"
@@ -168,10 +168,10 @@ export default function Home() {
                 required
               />
               <p className="text-xs text-green-500">This will create guest account</p>
-            </div>
+            </div>}
             <div className="">
               <div>
-                Your note edit URL:
+                Your note URL:
               </div>
               <p className="border p-2 mt-1 text-sm">
                 {currentUrl}

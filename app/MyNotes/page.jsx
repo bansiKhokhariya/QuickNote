@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash, Plus } from 'lucide-react';
+import { Pencil, Trash, Plus, Eye } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import { Button } from '@/components/ui/button'
 
@@ -12,6 +12,11 @@ export default function MyNotes() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    localStorage.removeItem('isEditNote');
+  }, []);
+
 
   useEffect(() => {
     // Function to fetch notes from the server
@@ -55,7 +60,12 @@ export default function MyNotes() {
 
 
   const handleEdit = (noteUniqueId) => {
-    router.push(`/edit/${noteUniqueId}`);
+    localStorage.setItem('isEditNote', 'true');
+    router.push(`/${noteUniqueId}`);
+  };
+
+  const handleView = (noteUniqueId) => {
+    router.push(`/${noteUniqueId}`);
   };
 
   const handleDelete = async (noteUniqueId) => {
@@ -110,6 +120,7 @@ export default function MyNotes() {
                   <div className="mt-2 flex space-x-2">
                     <Pencil size={20} color='blue' className='cursor-pointer' onClick={() => handleEdit(note?.noteUniqueId)} />
                     <Trash size={20} color='red' className='cursor-pointer' onClick={() => handleDelete(note?.noteUniqueId)} />
+                    <Eye size={20} color='blue' className='cursor-pointer' onClick={() => handleView(note?.noteUniqueId)} />
                   </div>
                 </li>
               ))
@@ -118,7 +129,6 @@ export default function MyNotes() {
                 No notes found
               </div>
             )}
-
           </ul>
         )}
       </div>
