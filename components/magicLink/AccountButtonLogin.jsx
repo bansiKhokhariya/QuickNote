@@ -24,7 +24,7 @@ const AccountButtonLogin = () => {
     return (
         <Popover>
             <PopoverTrigger>
-                <Button variant="outline" size="icon"> {getFirstLetterFromEmail(session?.user?.email) || 'Account'}</Button>
+                <Button size="icon"> {getFirstLetterFromEmail(session?.user?.email) || 'Account'}</Button>
             </PopoverTrigger>
             <PopoverContent>
                 <Button variant='destructive' size='sm' onClick={handleSignOut}>Logout</Button>
