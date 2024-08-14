@@ -31,7 +31,7 @@ const SignInButton = () => {
     try {
       setLoading(true);
       setDisabled(true);
-      await signIn('email', { email, callbackUrl: '/edit/83BC36' });
+      await signIn('email', { email, callbackUrl: '/' });
     } catch (error) {
       setLoading(false);
       setDisabled(false);
