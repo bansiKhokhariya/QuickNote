@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Trash, Plus } from 'lucide-react';
 import { useSession } from "next-auth/react";
+import { Button } from '@/components/ui/button'
+
 
 export default function MyNotes() {
   const { data: session, status } = useSession();
@@ -88,8 +90,12 @@ export default function MyNotes() {
     <div className="py-12 container mx-auto">
       <div className="p-4">
         <div className='flex justify-between items-center mt-5 mb-5'>
-          <p className='text-[30px]'><b>My Notes List</b> </p>
-          <button className='bg-black text-white rounded-lg border px-4 py-2' onClick={handleNewNote}>+ New Note</button>
+          <div className='flex items-center gap-2'>
+            <p className='text-lg sm:text-[30px]'><b>My Notes List</b> </p>
+          </div>
+          <Button variant="outline" size="icon" onClick={handleNewNote}>
+            <Plus className="h-[1.2rem] w-[1.2rem]" />
+          </Button>
         </div>
         {loading ? (
           <div className="flex justify-center items-center h-64">

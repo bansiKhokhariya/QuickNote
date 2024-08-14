@@ -92,7 +92,7 @@ const Page = ({ params }) => {
                                     placeholder="Enter note title here"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="p-1 sm:p-2 border border-gray-300 rounded text-[8px] sm:text-lg"
+                                    className="p-1 border rounded text-[8px] sm:text-lg"
                                 />
                                 <div onClick={handleUpdate}>
                                     <Button className="md:block hidden px-10">Save</Button>
