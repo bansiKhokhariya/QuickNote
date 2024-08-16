@@ -15,30 +15,6 @@ const generateUniqueId = async () => {
   return uniqueId;
 };
 
-// GET handler to fetch notes
-// export async function GET(req: NextRequest) {
-//   await connectMongo();
-
-//   const noteUniqueId = req.nextUrl.searchParams.get('noteUniqueId');
-//   const email = req.nextUrl.searchParams.get('email');
-
-//   try {
-//     if (noteUniqueId) {
-//       const note = await Note.findOne({ noteUniqueId });
-//       if (!note) {
-//         return NextResponse.json({ success: false, error: 'Note not found' }, { status: 404 });
-//       }
-//       return NextResponse.json({ success: true, note });
-//     } else {
-//       const notes = await Note.find();
-//       return NextResponse.json({ success: true, notes });
-//     }
-//   } catch (error) {
-//     console.error('Error fetching notes:', error);
-//     return NextResponse.json({ success: false, error: 'Failed to fetch notes' }, { status: 500 });
-//   }
-// }
-
 export async function GET(req: NextRequest) {
 
   await connectMongo();
@@ -74,45 +50,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to fetch notes' }, { status: 500 });
   }
 }
-
-
-
-// export async function POST(req: NextRequest) {
-//   await connectMongo();
-
-//   try {
-//     const body = await req.json();
-//     const { noteUniqueId, title, editor_content , email } = body;
-
-//     let result;
-//     if (noteUniqueId) {
-//       // Update existing note by noteUniqueId
-//       result = await Note.findOneAndUpdate(
-//         { noteUniqueId },
-//         { title, editor_content },
-//         { new: true, runValidators: true }
-//       );
-//       if (!result) {
-//         return NextResponse.json({ success: false, error: 'Note not found' }, { status: 404 });
-//       }
-//     } else {
-//       // Create a new note with a unique noteUniqueId
-//       const uniqueNoteId = await generateUniqueId();
-//       const newNote = new Note({
-//         title,
-//         editor_content,
-//         noteUniqueId: uniqueNoteId,
-//       });
-//       result = await newNote.save();
-//     }
-
-//     return NextResponse.json({ success: true, note: result });
-//   } catch (error) {
-//     console.error('Error saving note:', error);
-//     return NextResponse.json({ success: false, error: 'Failed to save note' }, { status: 500 });
-//   }
-// }
-
 
 export async function POST(req: NextRequest) {
   await connectMongo();
@@ -158,7 +95,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to save note' }, { status: 500 });
   }
 }
-
 
 export async function DELETE(req: NextRequest) {
   await connectMongo();

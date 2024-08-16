@@ -6,11 +6,11 @@ import toast from "react-hot-toast";
 import { defaultValue } from "./default-value";
 import Login from '@/components/magicLink/Login'
 import { useRouter } from 'next/navigation'
-import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { Save, ListOrdered } from 'lucide-react'
+import { Save, ListOrdered, X, BadgePlus } from 'lucide-react'
 import { useSession, signIn } from "next-auth/react";
+import TaskModal from '@/components/dialog/TaskModal';
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -19,7 +19,9 @@ export default function Home() {
   const [value, setValue] = useState(defaultValue);
   const [noteUniqueId, setNoteUniqueId] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editorkey, setEditorKey] = useState(false);
   const [theme, setTheme] = useState("light");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +31,20 @@ export default function Home() {
   }, [session]);
 
   const currentUrl = `https://quick-note-snowy.vercel.app/${noteUniqueId}`;
+
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+
+  const openTaskModal = () => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+    setIsTaskModalOpen(true);
+  };
+
+  const closeTaskModal = () => {
+    setIsTaskModalOpen(false);
+  };
 
   const handlePublish = async () => {
     const storedTheme = localStorage.getItem("theme");
@@ -107,6 +123,163 @@ export default function Home() {
     telegram: `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=Check%20this%20out!`
   };
 
+  const handleSubmit = async ({ topicName, keywords }) => {
+    setEditorKey(true)
+
+    try {
+      const response = await fetch('/api/generate-task', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ topicName, keywords }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Create content for topicName
+        const topicContent = {
+          type: "paragraph",
+          content: [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Topic Name: "
+            },
+            {
+              "type": "text",
+              text: `${data.topicName}`
+            }
+          ]
+        };
+
+        // Create content for keywords
+        const keywordsArray = data.keywords.split(',').map(keyword => keyword.trim());
+        const keywordsContent = {
+          type: "paragraph",
+          content: [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Keywords: "
+            },
+            {
+              "type": "text",
+              text: `\n${keywordsArray.join('\n')}`
+            }
+          ]
+        };
+
+        // Convert the generated URLs and titles into separate ProseMirror JSON structures
+
+        const URL = {
+          type: "paragraph",
+          content: [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "Domain Names: "
+            },
+          ]
+        };
+
+        const domainNamesContent = data.domainNames.map(url => ({
+          type: "paragraph",
+          content: [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": `https://${url}`,
+                    "target": "_blank",
+                    "rel": "noopener noreferrer nofollow",
+                    "class": "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer"
+                  }
+                }
+              ],
+              "text": `${url}`
+            }
+          ]
+        }));
+
+        const CfTitle = {
+          type: "paragraph",
+          content: [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "CF NAME: "
+            },
+          ]
+        };
+
+        const cfTitlesContent = data.cfNames.map(title => ({
+          type: "paragraph",
+          content: [
+            {
+              type: "text",
+              text: `${title}`
+            }
+          ]
+        }));
+
+        // Combine all the contents together
+        // Filter out any empty or null content blocks from value.content
+        const filteredContent = value?.content?.filter(block => {
+          return (
+            block?.content?.length > 0 &&
+            block.content[0]?.text?.trim() !== ""
+          );
+        });
+
+        // Update the value with the new content structure
+        const updatedValue = {
+          ...value,
+          content: [
+            ...filteredContent,
+            topicContent,
+            keywordsContent,
+            URL,
+            ...domainNamesContent,
+            CfTitle,
+            ...cfTitlesContent,
+          ],
+        };
+
+        setValue(updatedValue);
+        setEditorKey(true);
+      } else {
+        console.error('Failed to generate task');
+      }
+    } catch (error) {
+      console.error('Error generating task:', error);
+    }
+  };
+
+  const handleEditorChange = (newValue) => {
+    setValue(newValue);
+    setEditorKey(false); // Reset key state to false when value changes
+  };
+
   return (
     <>
       <div className="container mx-auto p-5">
@@ -135,6 +308,14 @@ export default function Home() {
                 </Button>
               </div>
             </div>
+            <div onClick={openTaskModal}>
+              <Button className="md:block hidden px-10">Generate Task</Button>
+              <div className='md:hidden block'>
+                <Button variant="outline" size="icon">
+                  <BadgePlus className="h-[1.2rem] w-[1.2rem]" />
+                </Button>
+              </div>
+            </div>
           </div>
           <div className="flex items-center gap-2 mb-2">
             <ThemeToggle />
@@ -142,9 +323,16 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <Editor initialValue={value} onChange={setValue} />
+          <Editor
+            key={editorkey ? JSON.stringify(value) : undefined}
+            initialValue={value}
+            onChange={handleEditorChange}
+          />
         </div>
       </div>
+
+      <TaskModal isOpen={isTaskModalOpen} theme={theme} onClose={closeTaskModal} onSubmit={handleSubmit} />
+
       {/* Modal Implementation */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -197,6 +385,9 @@ export default function Home() {
           </div>
         </div>
       )}
+
     </>
   );
 }
+
+
