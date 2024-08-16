@@ -58,48 +58,60 @@ export default function TaskModal({ theme, isOpen, onClose, onSubmit }) {
           placeholder="Topic Name"
           value={topicName}
           onChange={(e) => setTopicName(e.target.value)}
-          className="w-full p-2 border mb-4"
+          className="w-full p-2 border rounded mb-4"
         />
         <textarea
           placeholder="Keywords (comma-separated)"
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
-          className="w-full p-2 border mb-4"
+          className="w-full p-2 border rounded mb-3"
         />
-        <select
-          value={strategy}
-          onChange={(e) => setStrategy(e.target.value)}
-          className="w-full p-2 border mb-4"
-        >
-          <option value="ST1">ST1</option>
-          <option value="none">None</option>
-        </select>
-        <select
-          value={pixelOption}
-          onChange={(e) => setPixelOption(e.target.value)}
-          className="w-full p-2 border mb-4"
-        >
-          {Array.from({ length: 10 }, (_, i) => `A${i + 1}`).map(option => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
-        <select
-          value={feedProvider}
-          onChange={(e) => setFeedProvider(e.target.value)}
-          className="w-full p-2 border mb-4"
-        >
-          <option value="ADS">ADS</option>
-          <option value="Tonic">Tonic</option>
-          <option value="Syestem1">Syestem1</option>
-          <option value="Sedo">Sedo</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Custom Field"
-          value={customField}
-          onChange={(e) => setCustomField(e.target.value)}
-          className="w-full p-2 border mb-4"
-        />
+        <div>
+          <label className='text-gray-500'>strategy:</label>
+          <select
+            value={strategy}
+            onChange={(e) => setStrategy(e.target.value)}
+            className="w-full p-2 border rounded mb-4 mt-2"
+          >
+            <option value="ST1">ST1</option>
+            <option value="none">None</option>
+          </select>
+        </div>
+        <div>
+          <label className='text-gray-500'>Pixel:</label>
+          <select
+            value={pixelOption}
+            onChange={(e) => setPixelOption(e.target.value)}
+            className="w-full p-2 border rounded mb-4 mt-2"
+          >
+            {Array.from({ length: 10 }, (_, i) => `A${i + 1}`).map(option => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className='text-gray-500'>Feed provide:</label>
+          <select
+            value={feedProvider}
+            onChange={(e) => setFeedProvider(e.target.value)}
+            className="w-full p-2 border rounded mb-4 mt-2"
+          >
+            <option value="ADS">ADS</option>
+            <option value="Tonic">Tonic</option>
+            <option value="Syestem1">Syestem1</option>
+            <option value="Sedo">Sedo</option>
+          </select>
+        </div>
+        <div>
+          <label className='text-gray-500'>Custom Field:</label>
+          <input
+            type="text"
+            placeholder="Custom Field"
+            value={customField}
+            onChange={(e) => setCustomField(e.target.value)}
+            className="w-full p-2 border rounded mb-4 mt-2"
+          />
+        </div>
         <Button onClick={handleSubmit}>Submit</Button>
       </div>
     </div>
