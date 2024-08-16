@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Pencil, Trash, Plus, Eye } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import { Button } from '@/components/ui/button'
+import Login from '@/components/magicLink/Login'
 
 
 export default function MyNotes() {
@@ -103,9 +104,12 @@ export default function MyNotes() {
           <div className='flex items-center gap-2'>
             <p className='text-lg sm:text-[30px]'><b>My Notes List</b> </p>
           </div>
-          <Button variant="outline" size="icon" onClick={handleNewNote}>
-            <Plus className="h-[1.2rem] w-[1.2rem]" />
-          </Button>
+          <div className='flex gap-2'>
+            <Button variant="outline" size="icon" onClick={handleNewNote}>
+              <Plus className="h-[1.2rem] w-[1.2rem]" />
+            </Button>
+            <Login />
+          </div>
         </div>
         {loading ? (
           <div className="flex justify-center items-center h-64">

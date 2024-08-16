@@ -318,7 +318,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2 mb-2">
             <ThemeToggle />
-            <Login redirectUrl={'/'} />
+            <Login/>
           </div>
         </div>
         <div>

@@ -10,6 +10,7 @@ import { Plus, ListOrdered, Pencil, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { generateHTML } from '@tiptap/html';
 import { defaultExtensions } from '@/components/editor/extensions';
+import Head from 'next/head'
 
 const Page = ({ params }) => {
     const [value, setValue] = useState(null);
@@ -91,8 +92,16 @@ const Page = ({ params }) => {
         router.push(`/MyNotes`);
     };
 
+    useEffect(() => {
+        // Update the document title whenever the title state changes
+        document.title = title;
+    }, [title]);
+
     return (
         <>
+            <Head>
+                <title>{title}</title>
+            </Head>
             {loading ? (
                 <div className="flex flex-col items-center w-full min-h-screen py-12">
                     <div className="w-full max-w-2xl p-4">
@@ -150,7 +159,7 @@ const Page = ({ params }) => {
                             </div>
                             <div className="flex gap-2 mb-2">
                                 <ThemeToggle />
-                                <Login redirectUrl={'/'} />
+                                <Login />
                             </div>
                         </div>
                         <div>
