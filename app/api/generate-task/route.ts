@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         const mainTopic: string = topicName.split(' - ')[0].trim();
 
         // Split keywords and get the first one
-        const keywordList: string[] = keywords.split(',').map((kw: string) => kw.trim());
+        // const keywordList: string[] = keywords.split(',').map((kw: string) => kw.trim());
 
         // Create the base URL 
         const baseUrl: string = `${mainTopic.replace(/\s+/g, '-').toLowerCase()}`;
