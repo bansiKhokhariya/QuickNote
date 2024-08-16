@@ -1,5 +1,3 @@
-// /pages/api/generate-task.js
-
 import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {

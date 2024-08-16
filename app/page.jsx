@@ -123,9 +123,8 @@ export default function Home() {
     telegram: `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=Check%20this%20out!`
   };
 
-  const handleSubmit = async ({ topicName, keywords }) => {
+  const handleSubmit = async ({ topicName, keywords  }) => {
     setEditorKey(true)
-
     try {
       const response = await fetch('/api/generate-task', {
         method: 'POST',
