@@ -124,6 +124,7 @@ export default function Home() {
   };
 
   const handleSubmit = async ({ topicName, keywords  }) => {
+    setTitle(topicName);
     setEditorKey(true)
     try {
       const response = await fetch('/api/generate-task', {
