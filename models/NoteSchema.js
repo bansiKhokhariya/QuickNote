@@ -9,7 +9,6 @@ const noteSchema = new Schema({
     },
     editor_content: {
         type: mongoose.Schema.Types.Mixed,
-        required: true,
     },
     noteUniqueId: {
         type: String,
