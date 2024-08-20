@@ -335,9 +335,9 @@ export default function Home() {
 
       {/* Modal Implementation */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-[#1B1D21] bg-opacity-50 z-50">
           <div
-            className={`p-6 rounded shadow-lg w-96 border ${theme === "light" ? "bg-white" : "bg-black text-white"
+            className={`p-6 rounded shadow-lg w-96 border ${theme === "light" ? "bg-white" : "bg-[#1B1D21] text-white"
               }`}
           >
             <div className="flex justify-between items-center mb-6">

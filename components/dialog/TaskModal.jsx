@@ -47,8 +47,8 @@ export default function TaskModal({ theme, isOpen, onClose, onSubmit }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className={`p-6 rounded shadow-xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-lg border ${theme === "light" ? "bg-white" : "bg-black"}`}>
+    <div className="fixed inset-0 flex items-center justify-center bg-[#1B1D21] bg-opacity-50">
+      <div className={`p-6 rounded shadow-xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-lg border ${theme === "light" ? "bg-white" : "bg-[#1B1D21]"}`}>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Generate Task</h2>
           <X size={24} color="red" className="cursor-pointer" onClick={handleClose} />

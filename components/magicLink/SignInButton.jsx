@@ -46,9 +46,9 @@ const SignInButton = () => {
       </Button>
 
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-[#1B1D21] bg-opacity-50 z-50">
           <div
-            className={`p-6 rounded shadow-xl w-96 border ${theme == "light" ? "bg-white" : "bg-black"
+            className={`p-6 rounded shadow-xl w-96 border ${theme == "light" ? "bg-white" : "bg-[#1B1D21]"
               }`}
           >
             <div className="flex justify-between items-center mb-4">
@@ -68,7 +68,7 @@ const SignInButton = () => {
               required
             />
             <button
-              className="py-2 px-4 bg-black text-white rounded border"
+              className="py-2 px-4 bg-[#1B1D21] text-white rounded border"
               onClick={handleSignIn}
               disabled={disabled}
             >
